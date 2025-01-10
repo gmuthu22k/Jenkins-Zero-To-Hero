@@ -1,12 +1,20 @@
 pipeline {
   agent none
   stages {
-    stage('Back-end') {
+    stage('Checkout Code') {
+      agent any
+      steps {
+        // Checkout the code from the repository
+        checkout scm
+      }
+    }
+    stage('Back-end Build') {
       agent {
         docker { image 'maven:3.8.1-adoptopenjdk-11' }
       }
       steps {
         sh 'mvn --version'
+        sh 'mvn clean compile'
       }
     }
     stage('Front-end') {
